@@ -4,6 +4,17 @@ const list = document.getElementById('todo-list');
 const itemCountSpan = document.getElementById('item-count');
 const uncheckedCountSpan = document.getElementById('unchecked-count');
 
+function loadTodos() {
+  const savedTodos = localStorage.getItem('todos');
+  if (savedTodos) {
+    todos = JSON.parse(savedTodos);
+  }
+}
+
+function saveTodos() {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
 function newTodo() {
   const title = prompt('Введіть назву нової справи:');
   if (title) {
@@ -13,6 +24,7 @@ function newTodo() {
       checked: false
     };
     todos.push(newTodo);
+    saveTodos();
     render();
     updateCounter();
   }
@@ -41,6 +53,7 @@ function updateCounter() {
 
 function deleteTodo(id) {
   todos = todos.filter(todo => todo.id !== id);
+  saveTodos();
   render();
   updateCounter();
 }
@@ -49,7 +62,12 @@ function checkTodo(id) {
   const todo = todos.find(todo => todo.id === id);
   if (todo) {
     todo.checked = !todo.checked;
+    saveTodos();
     render();
     updateCounter();
   }
 }
+
+loadTodos();
+render();
+updateCounter();
