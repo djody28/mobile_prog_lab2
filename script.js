@@ -7,12 +7,21 @@ const uncheckedCountSpan = document.getElementById('unchecked-count');
 function loadTodos() {
   const savedTodos = localStorage.getItem('todos');
   if (savedTodos) {
-    todos = JSON.parse(savedTodos);
+    try {
+      todos = JSON.parse(savedTodos);
+    } catch (e) {
+      console.error('Помилка при парсингу Local Storage:', e);
+      todos = [];
+    }
   }
 }
 
 function saveTodos() {
-  localStorage.setItem('todos', JSON.stringify(todos));
+  try {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  } catch (e) {
+    console.error('Помилка при збереженні в Local Storage:', e);
+  }
 }
 
 function newTodo() {
